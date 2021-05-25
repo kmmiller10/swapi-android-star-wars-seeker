@@ -1,0 +1,44 @@
+<resources>
+    <!-- App & Fragment titles, and Search menu bar string resources-->
+    <string name="app_name">Star Wars Seeker</string>
+    <string name="list_title">Character Seeker</string>
+    <string name="character_detail_title">Character Info</string>
+    <string name="planet_detail_title">Planet Info</string>
+    <string name="search_title">Character Search</string>
+    <string name="search_hint">Luke Skywalker</string>
+
+    <!-- Search UI messages -->
+    <string name="initial_empty_list_msg">Use the search bar to find Star Wars characters</string>
+    <string name="initial_empty_detail_msg">Select a character from the list to see more details</string>
+    <string name="initial_empty_detail_search_first_msg">Make a search first, then select a character from the search results to see the character\'s details here</string>
+    <string name="no_results">No characters were found matching your search query</string>
+    <string name="loading">Loading…</string>
+    <string name="error_on_search">Error loading results</string>
+
+    <!-- Error messages -->
+    <string name="error">Error</string>
+    <string name="connection_timeout_msg">The connection to the server timed out.</string>
+    <string name="too_many_requests_msg">Too many requests are being made to the server. Please try again in a few minutes.</string>
+    <string name="internal_server_error_msg">The server encountered an internal error.</string>
+    <string name="server_down_msg">The server is unavailable at this time. Please try again in a few minutes.</string>
+    <string name="offline_error_msg">Your device appears to be disconnected from the internet. Please check your internet connection and try again.</string>
+    <string name="unknown_error_msg">An unknown error occurred.</string>
+    <string name="request_failed_debug_msg">The request failed.</string>
+
+    <!-- Character UI details -->
+    <string name="born_s">Born: %s</string>
+    <string name="height_s">Height: %s cm</string>
+    <string name="mass_s">Mass: %s kg</string>
+    <string name="hair_color_s">Hair color: %s</string>
+    <string name="skin_color_s">Skin color: %s</string>
+    <string name="eye_color_s">Eye color: %s</string>
+    <string name="gender_s">Gender: %s</string>
+    <string name="home_world_s">Home world: %s</string>
+
+    <!-- Planet UI details -->
+    <string name="residents">Residents</string>
+    <string name="climate_s">Climate: %s</string>
+    <string name="terrain_s">Terrain: %s</string>
+    <string name="diameter_s">Diameter: %s m</string>
+    <string name="population_s">Population: %s inhabitants</string>
+</resources>

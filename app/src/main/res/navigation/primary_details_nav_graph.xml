@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/character_list_fragment">
+
+    <fragment
+        android:id="@+id/character_list_fragment"
+        android:name="me.philoproject.starwarsseeker.ui.list.CharacterListFragment"
+        android:label="@string/list_title">
+        <action
+            android:id="@+id/show_character_detail"
+            app:destination="@+id/character_detail_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/character_detail_fragment"
+        android:name="me.philoproject.starwarsseeker.ui.detail.CharacterDetailFragment"
+        android:label="@string/character_detail_title"
+        tools:layout="@layout/fragment_character_detail">
+        <action
+            android:id="@+id/show_planet_detail"
+            app:destination="@+id/planet_detail_fragment" />
+        <argument
+            android:name="character_name"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/planet_detail_fragment"
+        android:name="me.philoproject.starwarsseeker.ui.detail.PlanetDetailFragment"
+        android:label="@string/planet_detail_title"
+        tools:layout="@layout/fragment_planet_detail">
+        <argument
+            android:name="planet_name"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+</navigation>
