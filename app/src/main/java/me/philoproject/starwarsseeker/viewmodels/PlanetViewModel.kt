@@ -13,13 +13,9 @@ class PlanetViewModel : ViewModel(), RealmViewModel<PlanetModel> {
 
     var name: String = ""
     var climate: String = ""
-        get() = field.capitalizeFirstCharacter()
     var terrain: String = ""
-        get() = field.capitalizeFirstCharacter()
     var diameter: String = ""
-        get() = field.capitalizeFirstCharacter()
     var population: String = ""
-        get() = field.capitalizeFirstCharacter()
 
     private var realm: Realm? = null
 
@@ -41,10 +37,10 @@ class PlanetViewModel : ViewModel(), RealmViewModel<PlanetModel> {
      */
     override fun fromRealmModel(realmModel: PlanetModel) {
         name = realmModel.name
-        climate = realmModel.climate
-        terrain = realmModel.terrain
-        diameter = realmModel.diameter
-        population = realmModel.population
+        climate = realmModel.climate.capitalizeFirstCharacter()
+        terrain = realmModel.terrain.capitalizeFirstCharacter()
+        diameter = realmModel.diameter.capitalizeFirstCharacter()
+        population = realmModel.population.capitalizeFirstCharacter()
     }
 
     override fun onCleared() {

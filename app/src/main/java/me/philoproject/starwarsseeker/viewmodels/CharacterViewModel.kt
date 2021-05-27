@@ -19,19 +19,12 @@ class CharacterViewModel(private val planetRepo: PlanetRepo) : ViewModel(), Real
 
     var name: String = ""
     var height: String = ""
-        get() = field.capitalizeFirstCharacter()
     var mass: String = ""
-        get() = field.capitalizeFirstCharacter()
     var birthYear: String = ""
-        get() = field.capitalizeFirstCharacter()
     var hairColor: String = ""
-        get() = field.capitalizeFirstCharacter()
     var skinColor: String = ""
-        get() = field.capitalizeFirstCharacter()
     var eyeColor: String = ""
-        get() = field.capitalizeFirstCharacter()
     var gender: String = ""
-        get() = field.capitalizeFirstCharacter()
     private var planetUrl: String = ""
 
     private val mPlanetName = MutableLiveData<String>()
@@ -109,13 +102,13 @@ class CharacterViewModel(private val planetRepo: PlanetRepo) : ViewModel(), Real
      */
     override fun fromRealmModel(realmModel: CharacterModel) {
         name = realmModel.name
-        height = realmModel.height
-        mass = realmModel.mass
-        birthYear = realmModel.birthYear
-        hairColor = realmModel.hairColor
-        skinColor = realmModel.skinColor
-        eyeColor = realmModel.eyeColor
-        gender = realmModel.gender
+        height = realmModel.height.capitalizeFirstCharacter()
+        mass = realmModel.mass.capitalizeFirstCharacter()
+        birthYear = realmModel.birthYear.capitalizeFirstCharacter()
+        hairColor = realmModel.hairColor.capitalizeFirstCharacter()
+        skinColor = realmModel.skinColor.capitalizeFirstCharacter()
+        eyeColor = realmModel.eyeColor.capitalizeFirstCharacter()
+        gender = realmModel.gender.capitalizeFirstCharacter()
         planetUrl = realmModel.homeWorldUrl
     }
 

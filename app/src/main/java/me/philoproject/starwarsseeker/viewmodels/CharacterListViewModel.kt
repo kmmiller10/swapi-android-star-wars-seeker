@@ -44,11 +44,11 @@ class CharacterListViewModel(private val repo: CharacterRepo) : ViewModel() {
             when(response.status) {
                 Status.Success -> {
                     response.data?.let { responseData ->
-                        // Update the LiveData property for character UI view models
+                        // Update the LiveData property for the Character models
                         val models = responseData.results.sortModels()
                         mCharacters.postValue(models)
 
-                        // Write or update these characters in realm so we can retrieve later before querying the API
+                        // Write or update these Characters in realm so we can retrieve later before querying the API
                         models.saveCharactersToRealm()
                     }
                     mStatus.postValue(Status.Success)
@@ -68,9 +68,9 @@ class CharacterListViewModel(private val repo: CharacterRepo) : ViewModel() {
     }
 
     /**
-     * Performs a local search in realm
+     * Performs a local search on Characters in Realm
      *
-     * @return The result of the query detached from realm and sorted by name
+     * @return The result of the query detached from Realm and sorted by name
      */
      fun queryRealmSorted(query: String): List<CharacterModel> {
         val rlm = realm ?: return listOf()
