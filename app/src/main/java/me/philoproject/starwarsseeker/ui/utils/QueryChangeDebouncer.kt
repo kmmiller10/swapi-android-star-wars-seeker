@@ -46,6 +46,7 @@ class QueryChangeDebouncer(
             if(newText.nonNullString().isEmpty()) {
                 // The text was cleared but we do not submit an empty query to the api, so we should clear lastSubmit now
                 lastSubmit = ""
+                return@launch
             }
 
             // Debounce after another second (1.5s total) for performing the api call
