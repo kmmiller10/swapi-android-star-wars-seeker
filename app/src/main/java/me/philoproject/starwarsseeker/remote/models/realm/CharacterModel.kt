@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
+/**
+ * DTO for a Star Wars Character. It serializes the JSON from the SWAPI response and gets cached in the Realm instance
+ */
 open class CharacterModel : RealmObject() {
     @PrimaryKey
     @SerializedName("name")
@@ -31,7 +34,7 @@ open class CharacterModel : RealmObject() {
     var gender: String = ""
 
     @SerializedName("homeworld")
-    var homeWorld: String = ""
+    var homeWorldUrl: String = ""
 
     fun equalsOther(other: CharacterModel): Boolean {
         return name == other.name
@@ -42,6 +45,6 @@ open class CharacterModel : RealmObject() {
                 && skinColor == other.skinColor
                 && eyeColor == other.eyeColor
                 && gender == other.gender
-                && homeWorld == other.homeWorld
+                && homeWorldUrl == other.homeWorldUrl
     }
 }

@@ -7,6 +7,10 @@ import me.philoproject.starwarsseeker.remote.base.Resource
 import me.philoproject.starwarsseeker.remote.models.ListResponseModel
 import me.philoproject.starwarsseeker.remote.models.realm.CharacterModel
 
+/**
+ * Implements the API network calls defined by the CharacterRepo. Parses the response to provide
+ * Resource return types, including data or an empty state on success, and an AppException on error
+ */
 class CharacterRepoImpl(private val api: StarWarsCharacterAPI) : CharacterRepo, AppExceptionParser {
 
     override suspend fun getCharacterList(query: String): Resource<ListResponseModel<CharacterModel>> {

@@ -10,6 +10,13 @@ import me.philoproject.starwarsseeker.R
 import me.philoproject.starwarsseeker.remote.base.AppException
 import me.philoproject.starwarsseeker.remote.base.AppException.*
 
+/**
+ * Shows a simple "OK" alert dialog with a title and message.
+ *
+ * @param title - String resource for the dialog title
+ * @param message - String resource for the dialog message
+ * @param onAcknowledge - The action to perform when the OK button is clicked
+ */
 fun Context.showSimpleAlert(@StringRes title: Int, @StringRes message: Int, onAcknowledge: DialogInterface.OnClickListener?) {
     AlertDialog.Builder(this)
         .setTitle(title)
@@ -18,6 +25,12 @@ fun Context.showSimpleAlert(@StringRes title: Int, @StringRes message: Int, onAc
         .show()
 }
 
+/**
+ * Parses an AppException into a user friendly message detailing what went wrong, then presents
+ * the error message in an AlertDialog.
+ *
+ * @param exception - The AppException to parse
+ */
 fun Context.showUiErrorForAppException(exception: AppException) {
     @StringRes val errorMsg = when(exception) {
         BAD_REQUEST_EXCEPTION, NOT_FOUND_EXCEPTION -> {
@@ -36,6 +49,22 @@ fun Context.showUiErrorForAppException(exception: AppException) {
     }
 }
 
-fun Fragment.formatString(@StringRes stringRes: Int, stringValue: String): String {
+/**
+ * Formats a String resource containing a single String argument
+ *
+ * @param stringRes - The String resource containing a String arg
+ * @param stringValue = The argument to provide for the String resource
+ * @param unknownRes - If the string value matches "unknown", an alternative resource can be
+ *                     provided with measurement units removed
+ * @return The formatted string
+ */
+fun Fragment.formatString(
+    @StringRes stringRes: Int,
+    stringValue: String,
+    @StringRes unknownRes: Int? = null
+): String {
+    if(stringValue.equals(getString(R.string.unknown), ignoreCase = true) && unknownRes != null) {
+        return getString(unknownRes)
+    }
     return String.format(getString(stringRes), stringValue)
 }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
  * Finds all characters with a name that contains the search query, ignoring case
  *
  * @param query - The query to search by
- * @return The results of the realm query
+ * @return All Characters that contain this query in their name
  */
 fun Realm.findCharactersByQuery(query: String): RealmResults<CharacterModel> {
     return where(CharacterModel::class.java)
@@ -21,14 +21,17 @@ fun Realm.findCharactersByQuery(query: String): RealmResults<CharacterModel> {
 /**
  * Finds all characters stored in realm
  *
- * @return All characters that have searched and cached previously
+ * @return All characters that have been searched and cached previously
  */
 fun Realm.findAllCharacters(): RealmResults<CharacterModel> {
     return findCharactersByQuery("")
 }
 
 /**
- * Finds a specific Character by name, if it exists
+ * Finds a Character by name, if it exists
+ *
+ * @param name - The name of the character
+ * @return The cached Character, or null if not found
  */
 fun Realm.findCharacterByName(name: String): CharacterModel? {
     return where(CharacterModel::class.java).equalTo("name", name).findFirst()
@@ -48,16 +51,20 @@ suspend fun List<CharacterModel>.saveCharactersToRealm() {
 }
 
 /**
- * Finds a specific Planet by name, if it exists
+ * Finds a Planet by name, if it exists
+ *
  * @param name - Name of the planet
+ * @return The cached Planet or null if not found
  */
 fun Realm.findPlanetByName(name: String): PlanetModel? {
     return where(PlanetModel::class.java).equalTo("name", name).findFirst()
 }
 
 /**
- * Finds a Planet by url, returns null if it hasn't been cached
- * @param url - SWAPI URL location of this planet
+ * Finds a Planet by url, if it exists
+ *
+ * @param url - SWAPI URL corresponding to this planet
+ * @return The cached Planet or null if not found
  */
 fun Realm.findPlanetByUrl(url: String): PlanetModel? {
     return where(PlanetModel::class.java).equalTo("url", url).findFirst()

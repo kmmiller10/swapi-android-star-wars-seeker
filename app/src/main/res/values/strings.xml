@@ -28,7 +28,9 @@
     <!-- Character UI details -->
     <string name="born_s">Born: %s</string>
     <string name="height_s">Height: %s cm</string>
+    <string name="height_unknown">Height: Unknown</string>
     <string name="mass_s">Mass: %s kg</string>
+    <string name="mass_unknown">Mass: Unknown</string>
     <string name="hair_color_s">Hair color: %s</string>
     <string name="skin_color_s">Skin color: %s</string>
     <string name="eye_color_s">Eye color: %s</string>
@@ -40,5 +42,10 @@
     <string name="climate_s">Climate: %s</string>
     <string name="terrain_s">Terrain: %s</string>
     <string name="diameter_s">Diameter: %s m</string>
+    <string name="diameter_unknown">Diameter: Unknown</string>
     <string name="population_s">Population: %s inhabitants</string>
+    <string name="population_unknown">Population: Unknown</string>
+
+    <!-- Other -->
+    <string name="unknown">Unknown</string>
 </resources>

@@ -9,6 +9,9 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
+/**
+ * Defines the Application class for this app. Responsible for initializing Koin and Realm.
+ */
 class StarWarsApp : Application() {
 
     override fun onCreate() {

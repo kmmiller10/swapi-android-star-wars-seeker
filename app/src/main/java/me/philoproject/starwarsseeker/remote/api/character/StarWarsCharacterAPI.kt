@@ -6,6 +6,9 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+/**
+ * Defines the API for Star Wars Characters from SWAPI
+ */
 interface StarWarsCharacterAPI {
     @GET("api/people/")
     suspend fun getCharacterList(@Query("search") search: String): Response<ListResponseModel<CharacterModel>>

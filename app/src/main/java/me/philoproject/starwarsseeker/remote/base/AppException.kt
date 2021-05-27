@@ -1,5 +1,10 @@
 package me.philoproject.starwarsseeker.remote.base
 
+/**
+ * Represents HTTP exceptions or Throwables. Allows the app to parse error types and display user friendly
+ * messages. If in the future the exception message/response message was desired to be logged or displayed,
+ * this class could be changed to Sealed Class with the desired exception types containing an error message
+ */
 enum class AppException {
     // 400 range errors
     BAD_REQUEST_EXCEPTION,

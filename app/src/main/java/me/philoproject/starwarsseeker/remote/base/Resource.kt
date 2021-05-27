@@ -1,7 +1,7 @@
 package me.philoproject.starwarsseeker.remote.base
 
 /**
- * Wraps the result of a network call, including the DTO and a Status to track states and exceptions,
+ * Wraps the result of a network call, including the DTO and a Status to track states and exceptions
  */
 class Resource<out T> private constructor(val status: Status, val data: T?) {
     companion object {

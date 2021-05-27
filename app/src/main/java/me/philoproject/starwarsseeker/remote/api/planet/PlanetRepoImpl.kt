@@ -6,6 +6,10 @@ import me.philoproject.starwarsseeker.remote.base.AppExceptionParser
 import me.philoproject.starwarsseeker.remote.base.Resource
 import me.philoproject.starwarsseeker.remote.models.realm.PlanetModel
 
+/**
+ * Implements the API network calls defined by the PlanetRepo. Parses the response to provide
+ * Resource return types, including data on success, and an AppException on error
+ */
 class PlanetRepoImpl(private val api: StarWarsPlanetAPI) : PlanetRepo, AppExceptionParser {
 
     override suspend fun getPlanet(planetUrl: String): Resource<PlanetModel> {

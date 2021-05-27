@@ -11,12 +11,19 @@ import me.philoproject.starwarsseeker.remote.api.planet.PlanetRepo
 import me.philoproject.starwarsseeker.remote.base.Status
 import me.philoproject.starwarsseeker.remote.models.realm.*
 
+/**
+ * ViewModel responsible for binding the Character DTO info to the View. Must retrieve home world Planet
+ * info, since it is given in the form of a URL
+ */
 class CharacterViewModel(private val planetRepo: PlanetRepo) : ViewModel(), RealmViewModel<CharacterModel> {
 
     var name: String = ""
     var height: String = ""
+        get() = field.capitalizeFirstCharacter()
     var mass: String = ""
+        get() = field.capitalizeFirstCharacter()
     var birthYear: String = ""
+        get() = field.capitalizeFirstCharacter()
     var hairColor: String = ""
         get() = field.capitalizeFirstCharacter()
     var skinColor: String = ""
@@ -30,31 +37,76 @@ class CharacterViewModel(private val planetRepo: PlanetRepo) : ViewModel(), Real
     private val mPlanetName = MutableLiveData<String>()
     val planetName: LiveData<String> get() = mPlanetName
 
+    private val mStatus = MutableLiveData<Status>()
+    val status: LiveData<Status> get() = mStatus
+
+    private var realm: Realm? = null
+
+    init {
+        realm = Realm.getDefaultInstance()
+    }
+
+    /**
+     * Fetches the home world Planet for this Character and loads the name into the View Model
+     */
     fun fetchPlanet() {
         if(planetUrl.isEmpty()) return
 
         // First search for the planet in realm for a quick load
-        val cachedPlanetName = findCachedPlanet(planetUrl)?.name.nonNullString()
+        val cachedPlanetName = findCachedHomeWorld(planetUrl)?.name.nonNullString()
         mPlanetName.postValue(cachedPlanetName)
 
         // Then call the API to fetch updated details
+        mStatus.postValue(Status.Running)
         viewModelScope.launch {
             val response = planetRepo.getPlanet(planetUrl)
-            if(response.status == Status.Success) {
-                response.data?.let { planetModel ->
-                    planetModel.savePlanetToRealm()
-                    mPlanetName.postValue(planetModel.name)
+            when(response.status) {
+                Status.Success -> {
+                    response.data?.let { planetModel ->
+                        planetModel.savePlanetToRealm()
+                        mPlanetName.postValue(planetModel.name)
+                    }
+                    mStatus.postValue(Status.Success)
+                }
+                Status.Empty -> {
+                    // NO-OP for this status, since it is not a list
+                }
+                Status.Running -> {
+                    mStatus.postValue(Status.Running)
+                }
+                is Status.Error -> {
+                    mStatus.postValue(response.status)
                 }
             }
         }
     }
 
-    private fun findCachedPlanet(url: String): PlanetModel? {
-        Realm.getDefaultInstance().use { rlm ->
-            return rlm.findPlanetByUrl(url)
+    /**
+     * Searches Realm for this character's home world in case it is already cached and can be displayed immediately
+     */
+    private fun findCachedHomeWorld(url: String): PlanetModel? {
+        return realm?.findPlanetByUrl(url)
+    }
+
+    /**
+     * Retrieves the Character from realm and maps into this view model
+     */
+    fun loadCharacterFromRealm(name: String) {
+        realm?.findCharacterByName(name)?.let {
+            fromRealmModel(it)
         }
     }
 
+    /**
+     * Search realm for cached Characters. If there are no cached Characters, the frag will display an empty state
+     */
+    fun hasCachedCharacters(): Boolean {
+        return realm?.findAllCharacters()?.isNotEmpty() ?: false
+    }
+
+    /**
+     * Map the RealmModel DTO to this ViewModel
+     */
     override fun fromRealmModel(realmModel: CharacterModel) {
         name = realmModel.name
         height = realmModel.height
@@ -64,6 +116,12 @@ class CharacterViewModel(private val planetRepo: PlanetRepo) : ViewModel(), Real
         skinColor = realmModel.skinColor
         eyeColor = realmModel.eyeColor
         gender = realmModel.gender
-        planetUrl = realmModel.homeWorld
+        planetUrl = realmModel.homeWorldUrl
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        realm?.close()
+        realm = null
     }
 }

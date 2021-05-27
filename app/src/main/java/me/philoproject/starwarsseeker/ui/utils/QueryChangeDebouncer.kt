@@ -8,6 +8,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.philoproject.starwarsseeker.app.nonNullString
 
+/**
+ * Debounces text changes in a SearchView. Has a shorter duration for debouncing text changes to perform
+ * local queries on cached models. Uses a longer duration to debounce a text change submission for the API call.
+ */
 class QueryChangeDebouncer(
     lifecycle: Lifecycle,
     private val onDebounceTextChange: (String?) -> Unit,
@@ -28,7 +32,9 @@ class QueryChangeDebouncer(
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
+        // Cancel the previous job
         queryJob?.cancel()
+
         queryJob = coroutineScope.launch {
             // Debounce after half a second for local queries which will search realm
             delay(LOCAL_QUERY_DEBOUNCE_DURATION)

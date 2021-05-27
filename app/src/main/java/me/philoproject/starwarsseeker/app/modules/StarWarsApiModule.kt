@@ -37,6 +37,7 @@ val retrofitModule = module {
     single { provideRetrofit(get(), get()) }
 }
 
+/* Provide API classes */
 fun provideCharacterApi(retrofit: Retrofit): StarWarsCharacterAPI {
     return retrofit.create(StarWarsCharacterAPI::class.java)
 }
@@ -45,12 +46,14 @@ fun providePlanetApi(retrofit: Retrofit): StarWarsPlanetAPI {
     return retrofit.create(StarWarsPlanetAPI::class.java)
 }
 
+/* Provide Gson factory */
 fun provideGson(): Gson {
     return GsonBuilder()
         .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         .create()
 }
 
+/* Provide HTTP logging interceptor and HTTP client */
 fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
     return HttpLoggingInterceptor().apply {
         if(BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
@@ -65,6 +68,7 @@ fun provideHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
         .build()
 }
 
+/* Provide Retrofit */
 fun provideRetrofit(factory: Gson, client: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .baseUrl(BASE_URL)

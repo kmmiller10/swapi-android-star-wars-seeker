@@ -6,30 +6,27 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import io.realm.Realm
 import me.philoproject.starwarsseeker.R
 import me.philoproject.starwarsseeker.databinding.FragmentCharacterListBinding
 import me.philoproject.starwarsseeker.remote.base.Status
-import me.philoproject.starwarsseeker.remote.models.realm.CharacterModel
-import me.philoproject.starwarsseeker.viewmodels.CharacterListViewModel
-import me.philoproject.starwarsseeker.remote.models.realm.findCharactersByQuery
 import me.philoproject.starwarsseeker.ui.detail.CharacterDetailFragment
 import me.philoproject.starwarsseeker.ui.showUiErrorForAppException
 import me.philoproject.starwarsseeker.ui.utils.OnModelClickListener
 import me.philoproject.starwarsseeker.ui.utils.QueryChangeDebouncer
-import me.philoproject.starwarsseeker.viewmodels.sortModels
+import me.philoproject.starwarsseeker.viewmodels.CharacterListViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
+/**
+ * Fragment displaying a list of characters found in a search query, empty view messages, and cached results
+ */
 class CharacterListFragment : Fragment(), OnModelClickListener {
     private lateinit var binding: FragmentCharacterListBinding
     private val viewModel by sharedViewModel<CharacterListViewModel>()
-    private var realm: Realm? = null
     private var characterListAdapter: CharacterListAdapter? = null
     private var persistQueries: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        realm = Realm.getDefaultInstance()
         setHasOptionsMenu(true)
     }
 
@@ -57,9 +54,8 @@ class CharacterListFragment : Fragment(), OnModelClickListener {
         }
 
         // Restore searches on rotate or on return to this frag
-        val models = queryRealmSorted(viewModel.lastSearch)
-        viewModel.restoreCharacters(models)
-        updateEmptyView(models.isEmpty(), null)
+        val restored = viewModel.restoreLastSearch()
+        updateEmptyView(!restored, null)
 
         // Observe ViewModel LiveData properties to update UI on character/status changes
         viewModel.characters.observe(viewLifecycleOwner, { characterList ->
@@ -154,7 +150,7 @@ class CharacterListFragment : Fragment(), OnModelClickListener {
                 { debouncedQuery ->
                     debouncedQuery?.let { query ->
                         // Perform a local search in realm and update the UI
-                        val models = queryRealmSorted(query)
+                        val models = viewModel.queryRealmSorted(query)
                         characterListAdapter?.submitList(models)
                         if(persistQueries) viewModel.lastSearch = query
 
@@ -169,17 +165,6 @@ class CharacterListFragment : Fragment(), OnModelClickListener {
                 }
             )
         )
-    }
-
-    /**
-     * Performs a local search in realm
-     *
-     * @return The result of the query detached from realm and sorted by name
-     */
-    private fun queryRealmSorted(query: String): List<CharacterModel> {
-        val rlm = realm ?: return listOf()
-        val results = rlm.findCharactersByQuery(query)
-        return rlm.copyFromRealm(results.sortModels())
     }
 
     /**
@@ -205,11 +190,4 @@ class CharacterListFragment : Fragment(), OnModelClickListener {
         // which will override the persisted query. Prevent this from happening by toggling this flag
         persistQueries = false
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        realm?.close()
-        realm = null
-    }
-
 }

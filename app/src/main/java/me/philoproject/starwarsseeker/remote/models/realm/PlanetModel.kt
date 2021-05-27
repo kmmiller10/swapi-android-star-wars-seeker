@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
+/**
+ * DTO for a Star Wars Planet. It serializes the JSON from the SWAPI response and gets cached in the Realm instance
+ */
 open class PlanetModel : RealmObject() {
     @PrimaryKey
     @SerializedName("name")
@@ -21,6 +24,8 @@ open class PlanetModel : RealmObject() {
     @SerializedName("population")
     var population: String = ""
 
+    // Planet URL appears unused, but its actually used in a Realm query to see if this planet has been cached before.
+    // Realm finds properties by string, so this property isn't referenced directly
     @SerializedName("url")
     var url: String = ""
 }
