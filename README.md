@@ -62,7 +62,7 @@ _____________________________
 
 _____________________________
 ### viewmodels package
-- Represents the view model layer in MVVM. The view mdoel layer is the piece between the view and the DTO/repository, and must handle network calls as well as local Realm queries
+- Represents the view model layer in MVVM. The view model layer is the piece between the view and the DTO/repository, and must handle network calls as well as local Realm queries
 - List view model for the character search query list retrieval and binding data to the list
 - Individual view models representing each DTO object and the network calls for those individual objects (e.g. full GET or in this case, getting the home world of the character, given the home world URL)
 - Extensions for sorting models and presenting the data on screen
