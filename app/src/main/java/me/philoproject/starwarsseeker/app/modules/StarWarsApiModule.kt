@@ -53,18 +53,19 @@ fun provideGson(): Gson {
         .create()
 }
 
-/* Provide HTTP logging interceptor and HTTP client */
+/* Provide HTTP logging interceptor */
 fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
     return HttpLoggingInterceptor().apply {
         if(BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
     }
 }
 
-fun provideHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+/* Provide HTTP client for Retrofit */
+fun provideHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
         .connectTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
         .readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS) // Writing to SWAPI is not allowed, so writeTimeout is not needed
-        .addInterceptor(interceptor)
+        .addInterceptor(loggingInterceptor)
         .build()
 }
 
